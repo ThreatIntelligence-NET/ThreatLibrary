@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreatLibrary.Parser", "ThreatLibrary.Parser\ThreatLibrary.Parser.csproj", "{2BE678E2-C1CA-4981-A233-4DDAB2E3C953}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreatLibrary.Parser.Test", "ThreatLibrary.Parser.Test\ThreatLibrary.Parser.Test.csproj", "{83AA955A-50D6-46A2-A136-79021835BC41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{2BE678E2-C1CA-4981-A233-4DDAB2E3C953}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BE678E2-C1CA-4981-A233-4DDAB2E3C953}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BE678E2-C1CA-4981-A233-4DDAB2E3C953}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83AA955A-50D6-46A2-A136-79021835BC41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83AA955A-50D6-46A2-A136-79021835BC41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83AA955A-50D6-46A2-A136-79021835BC41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83AA955A-50D6-46A2-A136-79021835BC41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
