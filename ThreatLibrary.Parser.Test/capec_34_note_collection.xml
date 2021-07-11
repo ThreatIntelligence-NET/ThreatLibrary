@@ -1,0 +1,4 @@
+<Notes xmlns="http://capec.mitre.org/capec-3">
+    <Note Type="Other">Large quantities of data is often moved from the target system to some other adversary controlled system. Data found on a target system might require extensive resources to be fully analyzed. Using these resources on the target system might enable a defender to detect the adversary. Additionally, proper analysis tools required might not be available on the target system.</Note>
+    <Note Type="Other">This attack differs from Data Interception and other data collection attacks in that the attacker actively queries the target rather than simply watching for the target to reveal information.</Note>
+</Notes>

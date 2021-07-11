@@ -1,0 +1,4 @@
+<References xmlns="http://capec.mitre.org/capec-3">
+    <Reference External_Reference_ID="REF-23" Section="DNS Threats &amp; Weaknesses of the Domain Name System"/>
+    <Reference External_Reference_ID="REF-27"/>
+</References>

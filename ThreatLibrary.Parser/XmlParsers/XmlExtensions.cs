@@ -1,23 +1,190 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 
 namespace ThreatLibrary.Parser.XmlParsers
 {
-    /// <summary>
-    /// This class contains common method for retrieving XML content.
-    /// </summary>
-    public static class XmlExtensions
+    static class XmlExtensions
     {
+        #region Normalizer
+        
+        enum XhtmlParagraphType
+        {
+            None,
+            FullParagraph,
+            HalfParagraph
+        }
+
+        public static XElement NormalizeText(this XElement element)
+        {
+            foreach (XText node in element.DescendantNodesAndSelf().OfType<XText>())
+            {
+                node.Value = ConsolidateWhitespace(node.Value);
+            }
+
+            return element;
+        }
+        
+        static string ConsolidateWhitespace(string value)
+        {
+            var builder = new StringBuilder(value.Length);
+            const int initial = 0;
+            const int normalCharacter = 1;
+            const int whitespace = 2;
+
+            int currentStatus = initial;
+            foreach (char c in value)
+            {
+                switch (currentStatus)
+                {
+                    case initial:
+                        if (char.IsWhiteSpace(c))
+                        {
+                            currentStatus = whitespace;
+                            builder.Append(' ');
+                        }
+                        else
+                        {
+                            currentStatus = normalCharacter;
+                            builder.Append(c);
+                        }
+                        break;
+                    case whitespace:
+                        if (!char.IsWhiteSpace(c))
+                        {
+                            currentStatus = normalCharacter;
+                            builder.Append(c);
+                        }
+
+                        break;
+                    case normalCharacter:
+                        if (char.IsWhiteSpace(c))
+                        {
+                            currentStatus = whitespace;
+                            builder.Append(' ');
+                        }
+                        else
+                        {
+                            builder.Append(c);
+                        }
+                        break;
+                }
+            }
+
+            return builder.ToString();
+        }
+        
+        static string ConsolidateParagraph(IEnumerable<string?> parsed)
+        {
+            const int initial = 0;
+            const int breaks = 1;
+            const int paragraph = 2;
+            int current = initial;
+            var paragraphs = new StringBuilder();
+            
+            foreach (string? item in parsed)
+            {
+                switch (current)
+                {
+                    case initial:
+                    {
+                        if (item == null) continue;
+                        paragraphs.Append(item);
+                        current = paragraph;
+
+                        break;
+                    }
+                    case paragraph:
+                    {
+                        if (item == null)
+                        {
+                            paragraphs.AppendLine();
+                            current = breaks;
+                        }
+                        else
+                        {
+                            paragraphs.Append(item);
+                        }
+
+                        break;
+                    }
+                    case breaks:
+                    {
+                        if (item == null) continue;
+                        paragraphs.Append(item);
+                        current = paragraph;
+
+                        break;
+                    }
+                }
+            }
+            
+            return paragraphs.ToString();
+        }
+
+        static XNamespace XhtmlNamespace => "http://www.w3.org/1999/xhtml";
+        
+        static readonly HashSet<XName> XhtmlParagraphElements = new()
+        {
+            XhtmlNamespace + "p",
+            XhtmlNamespace + "ul",
+            XhtmlNamespace + "ol",
+            XhtmlNamespace + "div"
+        };
+
+        static readonly HashSet<XName> XhtmlHalfParagraphElements = new()
+        {
+            XhtmlNamespace + "li"
+        };
+        
+        static XhtmlParagraphType GetXhtmlParagraphType(this XElement element)
+        {
+            if (XhtmlParagraphElements.Contains(element.Name)) return XhtmlParagraphType.FullParagraph;
+            if (XhtmlHalfParagraphElements.Contains(element.Name)) return XhtmlParagraphType.HalfParagraph;
+            return XhtmlParagraphType.None;
+        }
+
+        static void ParseXhtml(XElement element, ICollection<string?> parsed, int currentRecursiveNumber, int maxDepth)
+        {
+            if (currentRecursiveNumber > maxDepth)
+            {
+                parsed.Add(element.Value);
+                return;
+            }
+            
+            foreach (var node in element.Nodes())
+            {
+                switch (node)
+                {
+                    case XText textNode:
+                        parsed.Add(textNode.Value);
+                        break;
+                    case XElement elementNode:
+                    {
+                        XhtmlParagraphType paragraphType = elementNode.GetXhtmlParagraphType();
+                        if (paragraphType == XhtmlParagraphType.FullParagraph) parsed.Add(null);
+                        ParseXhtml(elementNode, parsed, currentRecursiveNumber + 1, maxDepth);
+                        if (paragraphType != XhtmlParagraphType.None) parsed.Add(null);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        public static string XhtmlToText(this XElement element, int maxDepth = 8)
+        {
+            var parsed = new List<string?>();
+            ParseXhtml(element, parsed, 1, maxDepth);
+            return ConsolidateParagraph(parsed);
+        }
+        
+        #endregion
+        
         #region Required Attribute
         
-        /// <summary>
-        /// Get attribute value from specified <paramref name="element"/>. This attribute is mandatory.
-        /// </summary>
-        /// <param name="element">The element which contains the attribute.</param>
-        /// <param name="attributeName">The name of the attribute.</param>
-        /// <returns>The string value of the attribute.</returns>
-        /// <exception cref="FormatException">The attribute does not exist.</exception>
         public static string GetRequiredAttributeValue(this XElement element, XName attributeName)
         {
             XAttribute? attribute = element.Attribute(attributeName);
@@ -29,16 +196,6 @@ namespace ThreatLibrary.Parser.XmlParsers
             return attribute.Value;
         }
         
-        /// <summary>
-        /// Get attribute value from specified <paramref name="element"/> and convert the content of the value into
-        /// <typeparamref name="T"/>. This attribute is mandatory.
-        /// </summary>
-        /// <param name="element">The element which contains the attribute.</param>
-        /// <param name="attributeName">The name of the attribute.</param>
-        /// <param name="parser">The parser which convert the string value into <typeparamref name="T"/>.</param>
-        /// <typeparam name="T">The destination type.</typeparam>
-        /// <returns>The converted attribute value</returns>
-        /// <exception cref="FormatException">The attribute does not exist.</exception>
         public static T GetRequiredAttributeAs<T>(
             this XElement element,
             XName attributeName,
@@ -58,7 +215,8 @@ namespace ThreatLibrary.Parser.XmlParsers
             return GetRequiredAttributeAs(
                 element,
                 attributeName,
-                value => int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture));
+                value => int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture)
+            );
         }
         
         #endregion

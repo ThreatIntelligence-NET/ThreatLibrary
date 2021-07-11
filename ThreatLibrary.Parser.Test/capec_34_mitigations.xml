@@ -1,0 +1,4 @@
+<Mitigations xmlns="http://capec.mitre.org/capec-3">
+    <Mitigation>Ensure that protocols have specific limits of scale configured.</Mitigation>
+    <Mitigation>Specify expectations for capabilities and dictate which behaviors are acceptable when resource allocation reaches limits.</Mitigation>
+</Mitigations>

@@ -1,0 +1,4 @@
+<Related_Attack_Patterns xmlns="http://capec.mitre.org/capec-3">
+    <Related_Attack_Pattern Nature="ChildOf" CAPEC_ID="141"/>
+    <Related_Attack_Pattern Nature="CanPrecede" CAPEC_ID="89"/>
+</Related_Attack_Patterns>

@@ -1,0 +1,19 @@
+<Execution_Flow xmlns="http://capec.mitre.org/capec-3">
+    <Attack_Step>
+        <Step>1</Step>
+        <Phase>Experiment</Phase>
+        <Description>[Craft a clickjacking page] The adversary utilizes web page layering techniques to try to craft a malicious clickjacking page</Description>
+        <Technique>The adversary leveraged iframe overlay capabilities to craft a malicious clickjacking page</Technique>
+        <Technique>The adversary leveraged Flash file overlay capabilities to craft a malicious clickjacking page</Technique>
+        <Technique>The adversary leveraged Silverlight overlay capabilities to craft a malicious clickjacking page</Technique>
+        <Technique>The adversary leveraged cross-frame scripting to craft a malicious clickjacking page</Technique>
+    </Attack_Step>
+    <Attack_Step>
+        <Step>2</Step>
+        <Phase>Exploit</Phase>
+        <Description>[Adversary lures victim to clickjacking page] Adversary utilizes some form of temptation, misdirection or coercion to lure the victim to loading and interacting with the clickjacking page in a way that increases the chances that the victim will click in the right areas.</Description>
+        <Technique>Lure the victim to the malicious site by sending the victim an e-mail with a URL to the site.</Technique>
+        <Technique>Lure the victim to the malicious site by manipulating URLs on a site trusted by the victim.</Technique>
+        <Technique>Lure the victim to the malicious site through a cross-site scripting attack.</Technique>
+    </Attack_Step>
+</Execution_Flow>

@@ -1,0 +1,11 @@
+<Description 
+    xmlns="http://capec.mitre.org/capec-3"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml">[Craft a malicious website]<xhtml:p>The attacker crafts a malicious website to which they plan to lure the victim who is using the vulnerable target system. The malicious website does two things:</xhtml:p>
+    <xhtml:div style="margin-left:10px;">
+        <xhtml:ul>
+            <xhtml:li>1. Contains a hook that intercepts incoming JSON objects, reads their contents and forwards the contents to the server controlled by the attacker (via a new XMLHttpRequest).</xhtml:li>
+            <xhtml:li>2. Uses the script tag with a URL in the source that requests a JSON object from the vulnerable target system. Once the JSON object is transmitted to the victim's browser, the malicious code (as described in step 1) intercepts that JSON object, steals its contents, and forwards to the attacker.</xhtml:li>
+        </xhtml:ul>
+    </xhtml:div>
+    <xhtml:p>This attack step leverages the fact that the same origin policy in the browser does not protect JavaScript originating from one domain from setting up an environment to intercept and access JSON objects arriving from a completely different domain.</xhtml:p>
+</Description>

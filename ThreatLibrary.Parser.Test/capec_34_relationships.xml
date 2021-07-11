@@ -1,0 +1,8 @@
+<Relationships xmlns="http://capec.mitre.org/capec-3">
+    <Member_Of CAPEC_ID="128"/>
+    <Has_Member CAPEC_ID="116">
+        <Exclude_Related Exclude_ID="403"/>
+        <Exclude_Related Exclude_ID="404"/>
+    </Has_Member>
+    <Has_Member CAPEC_ID="117"/>
+</Relationships>

@@ -1,0 +1,7 @@
+<Attack_Step xmlns="http://capec.mitre.org/capec-3">
+    <Step>2</Step>
+    <Phase>Exploit</Phase>
+    <Description>[Adversary lures victim to clickjacking page] Adversary utilizes some form of temptation, misdirection or coercion to lure the victim to loading and interacting with the clickjacking page in a way that increases the chances that the victim will click in the right areas.</Description>
+    <Technique>Lure the victim to the malicious site by sending the victim an e-mail with a URL to the site.</Technique>
+    <Technique CAPEC_ID="123">Lure the victim to the malicious site by manipulating URLs on a site trusted by the victim.</Technique>
+</Attack_Step>

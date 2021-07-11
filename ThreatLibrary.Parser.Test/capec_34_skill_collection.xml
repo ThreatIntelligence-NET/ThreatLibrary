@@ -1,0 +1,4 @@
+<Skills_Required xmlns="http://capec.mitre.org/capec-3">
+    <Skill Level="Low">To modify file name or file extension</Skill>
+    <Skill Level="Medium">To use misclassification to force the Web server to disclose configuration information, source, or binary data</Skill>
+</Skills_Required>

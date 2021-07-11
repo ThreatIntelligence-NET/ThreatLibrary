@@ -1,0 +1,9 @@
+<Taxonomy_Mappings xmlns="http://capec.mitre.org/capec-3">
+    <Taxonomy_Mapping Taxonomy_Name="WASC">
+        <Entry_ID>36</Entry_ID>
+        <Entry_Name>SSI Injection</Entry_Name>
+    </Taxonomy_Mapping>
+    <Taxonomy_Mapping Taxonomy_Name="OWASP Attacks">
+        <Entry_Name>Server-Side Includes (SSI) Injection</Entry_Name>
+    </Taxonomy_Mapping>
+</Taxonomy_Mappings>

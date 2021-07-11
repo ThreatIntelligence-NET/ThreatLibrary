@@ -1,0 +1,3 @@
+<Related_Attack_Pattern xmlns="http://capec.mitre.org/capec-3" Nature="ChildOf" CAPEC_ID="137">
+    <Exclude_Related Exclude_ID="403"/>
+</Related_Attack_Pattern>
