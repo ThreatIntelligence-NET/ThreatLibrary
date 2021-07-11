@@ -29,11 +29,23 @@ namespace ThreatLibrary.Parser.XmlParsers
             return attribute.Value;
         }
         
+        /// <summary>
+        /// Get attribute value from specified <paramref name="element"/> and convert the content of the value into
+        /// <typeparamref name="T"/>. This attribute is mandatory.
+        /// </summary>
+        /// <param name="element">The element which contains the attribute.</param>
+        /// <param name="attributeName">The name of the attribute.</param>
+        /// <param name="parser">The parser which convert the string value into <typeparamref name="T"/>.</param>
+        /// <typeparam name="T">The destination type.</typeparam>
+        /// <returns>The converted attribute value</returns>
+        /// <exception cref="FormatException">The attribute does not exist.</exception>
         public static T GetRequiredAttributeAs<T>(
             this XElement element,
             XName attributeName,
             Func<string, T> parser)
         {
+            if (parser == null) { throw new ArgumentNullException(nameof(parser)); }
+            
             string value = GetRequiredAttributeValue(element, attributeName);
             T taxonomyName = parser(value);
             return taxonomyName;

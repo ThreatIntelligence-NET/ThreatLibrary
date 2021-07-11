@@ -26,6 +26,31 @@ namespace ThreatLibrary.Parser.Test.XmlParsers
             var elementWithoutAttribute = new XElement("element");
 
             Assert.Throws<FormatException>(() => elementWithoutAttribute.GetRequiredAttributeValue("attribute"));
+            Assert.Throws<FormatException>(() => elementWithoutAttribute.GetRequiredAttributeAs("attribute", v => v));
+        }
+        
+        [Fact]
+        public void should_get_required_attribute_value_and_convert()
+        {
+            var elementWithAttribute = new XElement(
+                "element",
+                new XAttribute("attribute", "1")
+            );
+
+            Assert.Equal(1, elementWithAttribute.GetRequiredAttributeAs("attribute", int.Parse));
+        }
+        
+        [Fact]
+        public void should_throw_if_parser_is_null()
+        {
+            var elementWithAttribute = new XElement(
+                "element",
+                new XAttribute("attribute", "1")
+            );
+
+            Assert.Throws<ArgumentNullException>(
+                () => elementWithAttribute.GetRequiredAttributeAs<int>("attribute", null!)
+            );
         }
     }
 }
