@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
-using ThreatLibrary.Parser.XmlParsers;
 
 namespace ThreatLibrary.Parser.Capec.Parsers
 {
@@ -8,7 +8,15 @@ namespace ThreatLibrary.Parser.Capec.Parsers
     {
         public static string Parse(XElement element)
         {
-            return element.XhtmlToText();
+            if (element.HasElements)
+            {
+                using XmlReader reader = element.CreateReader(ReaderOptions.OmitDuplicateNamespaces);
+                
+                reader.MoveToContent();
+                return reader.ReadInnerXml();
+            }
+
+            return element.Value;
         }
         
         public static string[] ParseCollection(XElement element, XName name)
